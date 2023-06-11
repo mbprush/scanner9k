@@ -1,8 +1,7 @@
 import tkinter as tk
-from tkinter import ttk
 from pysnmp.hlapi import *
 
-# подпрограмма поиска. совпадения записываются в массив
+# подпрограмма поиска
 def find_devices_by_name(ip_address, device_name):
     matching_devices = []
 
@@ -21,12 +20,15 @@ def find_devices_by_name(ip_address, device_name):
 
         if errorStatus:
             return matching_devices
-
+        
+#циклично записывает значения в массив VarBind: oid в 0 ид, значение в 1 ид. 
+#Проверка сравнивает значения device_name и value: истина переводит значение oid в строку и дописывает его к matching_devices.
+#Возвращает читаемое значение value.
         for varBind in varBinds:
             oid = varBind[0]
             value = varBind[1]
             if device_name.lower() in value.prettyPrint().lower():
-                matching_devices.append((str(oid), value.prettyPrint()))
+                matching_devices.append((str(oid), value.prettyPrint())) # <-- вот это
 
     return matching_devices
 
@@ -39,10 +41,10 @@ def submit():
     if matching_devices:
         output_text.insert(tk.END, f"Совпадения:\n")
         for oid, name in matching_devices:
-            output_text.insert(tk.END, f"OID устройства: {oid} | Имя устройства: {name}\n")
+            output_text.insert(tk.END, f"OID устройства: {oid} | Имя устройства: {name}\n") #вывод всех подходящих значений
     else:
         output_text.insert(tk.END, f"Не найдено.")
-    lines = len(output_text.get("1.0", tk.END).split('\n'))
+    lines = len(output_text.get("1.0", tk.END).split('\n')) #ширина и высота поля с выводом текста определяется динамически по ширине текста
     output_text.configure(width=len(output_text.get("1.0", tk.END)) + 2, height=lines)
 
 # параметры окна, полей ввода, кнопки и текстового поля
