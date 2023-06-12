@@ -1,5 +1,9 @@
 import tkinter as tk
 from pysnmp.hlapi import *
+import os
+import win32api
+import win32con
+import win32gui
 
 # подпрограмма поиска
 def find_devices_by_name(ip_address, device_name):
@@ -51,7 +55,17 @@ def submit():
 window = tk.Tk()
 window.title("SNMP Epic Scanner 9000")
 window.geometry("400x250")
+window.iconbitmap("iocn.ico")
 
+hwnd = win32gui.GetParent(window.winfo_id())
+
+icon_path = "iocn.ico"
+if os.path.exists(icon_path):
+    icon_flags = win32con.LR_LOADFROMFILE | win32con.LR_DEFAULTSIZE | win32con.LR_SHARED
+    hicon = win32gui.LoadImage(None, icon_path, win32con.IMAGE_ICON, 0, 0, icon_flags)
+    if hicon:
+        win32gui.SendMessage(hwnd, win32con.WM_SETICON, win32con.ICON_SMALL, hicon)
+        
 input1_label = tk.Label(window, text="Адрес устройства: ")
 input1_label.pack()
 input1 = tk.Entry(window)
