@@ -71,7 +71,7 @@ def reboot_router(ip, community):
     if error_indication: # Проверка на наличие ошибки при отправке команды перезагрузки
         result_text.insert(tk.END, f"Ошибка: {error_indication}")
     else:
-        result_text.insert(tk.END, "Отправлена команда перезагрузки на роутер {ip}")   
+        result_text.insert(tk.END, f"Отправлена команда перезагрузки на роутер {ip}")   
 
 # Функция для декодирования значения операционного статуса порта (ifOperStatus)
 def decode_oper_status(status):
